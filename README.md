@@ -39,6 +39,7 @@ System flow:
 - Workers claim the job and mark the job `success` or `failed`
 
 Design thinking:
+- I use Redis for queue and Postgresql for persistent.
 - Jobs with the same `object_id` in time windows of 5 minutes will return the same `job_id`.
 - When workers consume messages from `Redis Queue`. It begins a transaction, claims the job for execution, sets job `status` to `running`. And set job `status` to `success` or `failed` when done. So the worker can rerun the job event when crash/restart.
 - Job execution timeout will be set by env `JOB_TIMEOUT` in seconds.
@@ -60,8 +61,6 @@ curl --location --request GET 'localhost:3000/v1/jobs/1'
 ```
 
 ## 5. Database:
-I use Redis for queue and Postgresql for persistent.
-
 Database schema:
 ```
 CREATE TABLE IF NOT EXISTS "jobs" (
