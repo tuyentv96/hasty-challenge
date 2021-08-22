@@ -25,7 +25,7 @@ I separate the API and worker for some reason:
 - Worker will consume messages from the queue and execute the job.
 - We can develop and deploy the API server and worker independently.
 - Modify and deploy API server will not require redeploy worker instance.
-- API server and worker can scale independently
+- API server and worker can scale independently.
 
 Jobs have four statuses:
 - `created`: When the job was created
