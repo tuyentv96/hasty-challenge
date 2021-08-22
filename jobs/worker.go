@@ -1,6 +1,7 @@
 package jobs
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/adjust/rmq/v4"
@@ -49,12 +50,14 @@ func NewWorker(cfg config.Config, logger *logrus.Entry, svc Service, connection 
 }
 
 func (w *WorkerImpl) Start() error {
-	if err := w.queue.StartConsuming(w.cfg.RedisConfig.RedisPrefetch, time.Duration(w.cfg.RedisConfig.RedisPollIntervalMs)*time.Millisecond); err != nil {
+	if err := w.queue.StartConsuming(w.cfg.JonPrefetch, time.Duration(w.cfg.RedisConfig.RedisPollIntervalMs)*time.Millisecond); err != nil {
 		return errors.Wrapf(err, "failed to start consuming")
 	}
 
-	if _, err := w.queue.AddConsumer("worker", NewConsumer(w.cfg, w.logger, w.svc, w.clock, w.random, w.transactioner)); err != nil {
-		return errors.Wrap(err, "failed to add consumer")
+	for i := int64(0); i < w.cfg.JonPrefetch; i++ {
+		if _, err := w.queue.AddConsumer(fmt.Sprintf("worker:%d", i), NewConsumer(w.cfg, w.logger, w.svc, w.clock, w.random, w.transactioner)); err != nil {
+			return errors.Wrap(err, "failed to add consumer")
+		}
 	}
 
 	w.logger.Info("Start worker successfully")

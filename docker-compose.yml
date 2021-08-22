@@ -26,15 +26,13 @@ services:
       SQL_NAME: postgres
       SQL_ADDRESS: postgres:5432
       REDIS_ADDRESS: redis:6379
-      REDIS_PREFETCH: 1
-      JOB_TIMEOUT: 10
+      JOB_PREFETCH: 10
+      JOB_TIMEOUT: 30
     depends_on:
       - postgres
       - redis
   postgres:
     image: postgres:12.8-alpine
-    volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
@@ -45,5 +43,3 @@ services:
     image: redis:5.0.13-alpine3.14
     ports:
       - 6379
-volumes:
-  database-data:

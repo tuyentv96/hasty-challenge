@@ -9,7 +9,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/adjust/rmq/v4"
 	"github.com/go-pg/pg/v9"
 	"github.com/go-redis/redis/v8"
 	"github.com/ory/dockertest/v3"
@@ -18,7 +17,7 @@ import (
 	migration "github.com/tuyentv96/hasty-challenge/db"
 )
 
-func SetupDBTest() (DockerDBConn *pg.DB, closeFunc func() error) {
+func SetupDBTest() (dbClient *pg.DB, closeFunc func() error) {
 	cfg := struct {
 		Address  string `json:"addr"`
 		Database string `json:"db"`
@@ -81,14 +80,14 @@ func SetupDBTest() (DockerDBConn *pg.DB, closeFunc func() error) {
 	)
 
 	if err := pool.Retry(func() error {
-		DockerDBConn = pg.Connect(&pg.Options{
+		dbClient = pg.Connect(&pg.Options{
 			Addr:     cfg.Address,
 			Database: cfg.Database,
 			User:     cfg.Username,
 			Password: cfg.Password,
 		})
 
-		_, err := DockerDBConn.ExecContext(context.Background(), "SELECT 1")
+		_, err := dbClient.ExecContext(context.Background(), "SELECT 1")
 		return err
 	}); err != nil {
 		log.Fatalf("Could not connect to docker: %s", err)
@@ -111,14 +110,6 @@ func handleInterrupt(pool *dockertest.Pool, container *dockertest.Resource) {
 		}
 		os.Exit(0)
 	}()
-}
-
-func NewConnection(db *redis.Client, tag string) (rmq.Connection, error) {
-	return rmq.OpenConnectionWithRedisClient(tag, db, nil)
-}
-
-func NewQueue(conn rmq.Connection, queueName string) (rmq.Queue, error) {
-	return conn.OpenQueue(queueName)
 }
 
 func SetupRedisTest() (redisClient *redis.Client, closeFunc func() error) {

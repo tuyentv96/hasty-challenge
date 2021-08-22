@@ -17,7 +17,7 @@ import (
 	"github.com/tuyentv96/hasty-challenge/utils"
 )
 
-func TestRunJobSuccessfully(t *testing.T) {
+func TestE2EJob(t *testing.T) {
 	ctx := context.Background()
 	now := utils.TimeNow()
 	t.Run("run job successfully", func(t *testing.T) {
@@ -27,13 +27,13 @@ func TestRunJobSuccessfully(t *testing.T) {
 		cfg := config.Config{
 			JobConfig: config.JobConfig{
 				TimeoutInSeconds: 40,
+				JonPrefetch:      5,
 			},
 			RedisConfig: config.RedisConfig{
-				RedisPrefetch:       1,
 				RedisPollIntervalMs: 100,
 			},
 		}
-		queueName := fmt.Sprintf("run_job_%s", gofakeit.UUID())
+		queueName := gofakeit.UUID()
 		svc := initTestService(t, queueName, clock)
 
 		worker := initTestWorker(t, cfg, svc, queueName, clock, random)
@@ -55,8 +55,11 @@ func TestRunJobSuccessfully(t *testing.T) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		job := jobFromRec(t, rec)
 
+		// wait for consumer claim job
 		time.Sleep(2 * time.Second)
+		// time travel to sleep duration
 		clock.Add(time.Duration(sleepTimeInSeconds) * time.Second)
+		// wait for DoJob done
 		time.Sleep(2 * time.Second)
 
 		actual, err := svc.GetJobByID(ctx, job.Id)
@@ -70,13 +73,13 @@ func TestRunJobSuccessfully(t *testing.T) {
 		cfg := config.Config{
 			JobConfig: config.JobConfig{
 				TimeoutInSeconds: 25,
+				JonPrefetch:      5,
 			},
 			RedisConfig: config.RedisConfig{
-				RedisPrefetch:       1,
 				RedisPollIntervalMs: 100,
 			},
 		}
-		queueName := fmt.Sprintf("job_exceed_timeout_%s", gofakeit.UUID())
+		queueName := gofakeit.UUID()
 		svc := initTestService(t, queueName, clock)
 
 		worker := initTestWorker(t, cfg, svc, queueName, clock, random)
@@ -103,8 +106,11 @@ func TestRunJobSuccessfully(t *testing.T) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		job := jobFromRec(t, rec)
 
+		// wait for consumer claim job
 		time.Sleep(2 * time.Second)
+		// time travel to timeout duration
 		clock.Add(time.Duration(cfg.TimeoutInSeconds) * time.Second)
+		// wait for DoJob done
 		time.Sleep(2 * time.Second)
 
 		actual, err := svc.GetJobByID(ctx, job.Id)

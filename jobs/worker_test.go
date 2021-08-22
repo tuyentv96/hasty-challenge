@@ -4,15 +4,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tuyentv96/hasty-challenge/utils"
-
-	"github.com/brianvoe/gofakeit/v6"
-
 	"github.com/benbjohnson/clock"
-
+	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/require"
 
 	"github.com/tuyentv96/hasty-challenge/config"
+	"github.com/tuyentv96/hasty-challenge/utils"
 )
 
 func initTestWorker(t *testing.T, cfg config.Config, svc Service, queueName string, clock clock.Clock, random utils.Random) *WorkerImpl {
@@ -26,9 +23,9 @@ func TestWorkerStartAndStop(t *testing.T) {
 	cfg := config.Config{
 		JobConfig: config.JobConfig{
 			TimeoutInSeconds: 30,
+			JonPrefetch:      5,
 		},
 		RedisConfig: config.RedisConfig{
-			RedisPrefetch:       1,
 			RedisPollIntervalMs: 100,
 		},
 	}

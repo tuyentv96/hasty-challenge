@@ -20,15 +20,6 @@ var (
 	testTransaction   utils.Transactioner
 )
 
-func newTestQueue(queueName string) rmq.Queue {
-	q, err := testRmqConnection.OpenQueue(queueName)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-
-	return q
-}
-
 func TestMain(m *testing.M) {
 	logger := logrus.New()
 	testLogger = logrus.NewEntry(logger)

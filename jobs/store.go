@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-pg/pg/v9"
 	"github.com/go-pg/pg/v9/orm"
+
 	"github.com/tuyentv96/hasty-challenge/utils"
 )
 

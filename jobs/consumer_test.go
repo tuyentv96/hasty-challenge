@@ -5,15 +5,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tuyentv96/hasty-challenge/utils"
-
 	"github.com/benbjohnson/clock"
 	"github.com/brianvoe/gofakeit/v6"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/tuyentv96/hasty-challenge/config"
+	"github.com/tuyentv96/hasty-challenge/utils"
 )
 
 func initTestConsumer(svc Service, clock clock.Clock, random utils.Random) *Consumer {

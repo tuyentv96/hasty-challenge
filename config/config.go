@@ -22,7 +22,6 @@ type SQLConfig struct {
 
 type RedisConfig struct {
 	RedisAddress        string `envconfig:"REDIS_ADDRESS" default:"localhost:6379"`
-	RedisPrefetch       int64  `envconfig:"REDIS_PREFETCH" default:"10"`
 	RedisPollIntervalMs int    `envconfig:"REDIS_POLL_INTERVAL" default:"1000"`
 }
 
@@ -31,5 +30,6 @@ type LoggerConfig struct {
 }
 
 type JobConfig struct {
-	TimeoutInSeconds int `envconfig:"JOB_TIMEOUT" default:"20"`
+	JonPrefetch      int64 `envconfig:"JOB_PREFETCH" default:"10"`
+	TimeoutInSeconds int   `envconfig:"JOB_TIMEOUT" default:"20"`
 }
