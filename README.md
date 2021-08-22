@@ -60,8 +60,7 @@ curl --location --request GET 'localhost:3000/v1/jobs/1'
 ```
 
 ## 5. Database:
-I use Redis for queue
-I use Postgresql for persistent.
+I use Redis for queue and Postgresql for persistent.
 
 Database schema:
 ```
