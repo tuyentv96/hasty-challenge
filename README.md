@@ -20,29 +20,29 @@ docker-compose up --scale job-worker=4
 
 ## 3. Architecture
 
-I seprate the API and worker for some reason:
-- API server will receive job request from user, save to database and send to queue.
-- Worker will consume message from queue and execute job.
+I separate the API and worker for some reason:
+- API server will receive job request from the user, save to database and send to queue.
+- Worker will consume messages from the queue and execute the job.
 - We can develop and deploy the API server and worker independently.
 - Modify and deploy API server will not require redeploy worker instance.
 - API server and worker can scale independently
 
-Jobs have four status:
-`created`: When job was created
-`running`: When worker claim and processing job
-`success`: When job was success
-`failed`: When job was failed or exceed timeout
+Jobs have four statuses:
+- `created`: When the job was created
+- `running`: When workers claim and processing job
+- `success`: When the job was success
+- `failed`: When the job was failed or exceed the timeout
 
 System flow:
-- When user send create request to server, server will response a `job_id`.
-- Server save job to database and send to queue.
+- When the user sends create request to the server, the server will respond a `job_id`.
+- Server saves the job to the database and sends it to the queue.
 - Workers claim the job and mark the job `success` or `failed`
 
-Design thining:
-- Jobs with same `object_id` in time windows of 5 minutes will return the same `job_id`.
-- When worker consume message from `Redis Queue`. It begin a transaction, claim the job for execute, set job `status` to `running`. And set job `status` to `success` or `failed` when done. So worker can rerun the job event when crash/restart.
+Design thinking:
+- Jobs with the same `object_id` in time windows of 5 minutes will return the same `job_id`.
+- When workers consume messages from `Redis Queue`. It begins a transaction, claims the job for execution, sets job `status` to `running`. And set job `status` to `success` or `failed` when done. So the worker can rerun the job event when crash/restart.
 - Job execution timeout will be set by env `JOB_TIMEOUT` in seconds.
-- The prefetch limit `JOB_PREFETCH` is a limit number of jobs that a worker can reserve for itself
+- The env prefetch limit `JOB_PREFETCH` is a limited number of jobs that a worker can reserve for itself
 
 ## 4. API desgin:
 Create Job API
@@ -76,9 +76,9 @@ CREATE TABLE IF NOT EXISTS "jobs" (
 );
 ```
 
-`start_time` is the time when job was claimed.
-`end_time` is the time when job was done.
-`message` will store error message when job was failed or job exceed timeout message.
+`start_time` is the time when the job was claimed.
+`end_time` is the time when the job was done.
+`message` will store an error message when the job was failed or the job exceeds the timeout message.
 
 Code Structure:
 ```
@@ -96,7 +96,7 @@ project
 
 
 ## 6. Run tests:
-Run tests will require docker for create Postgresql and Redis container.
+Run tests will require docker to create Postgresql and Redis containers.
 ```
 go test -v ./...
 ```
