@@ -13,13 +13,11 @@ import (
 	"time"
 
 	"github.com/brianvoe/gofakeit/v6"
-
-	"github.com/tuyentv96/hasty-challenge/config"
-
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/tuyentv96/hasty-challenge/config"
 	"github.com/tuyentv96/hasty-challenge/utils"
 )
 

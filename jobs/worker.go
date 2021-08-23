@@ -50,11 +50,11 @@ func NewWorker(cfg config.Config, logger *logrus.Entry, svc Service, connection 
 }
 
 func (w *WorkerImpl) Start() error {
-	if err := w.queue.StartConsuming(w.cfg.JonPrefetch, time.Duration(w.cfg.RedisConfig.RedisPollIntervalMs)*time.Millisecond); err != nil {
+	if err := w.queue.StartConsuming(w.cfg.JobPrefetch, time.Duration(w.cfg.RedisConfig.RedisPollIntervalMs)*time.Millisecond); err != nil {
 		return errors.Wrapf(err, "failed to start consuming")
 	}
 
-	for i := int64(0); i < w.cfg.JonPrefetch; i++ {
+	for i := int64(0); i < w.cfg.JobPrefetch; i++ {
 		if _, err := w.queue.AddConsumer(fmt.Sprintf("worker:%d", i), NewConsumer(w.cfg, w.logger, w.svc, w.clock, w.random, w.transactioner)); err != nil {
 			return errors.Wrap(err, "failed to add consumer")
 		}

@@ -27,7 +27,7 @@ func TestE2EJob(t *testing.T) {
 		cfg := config.Config{
 			JobConfig: config.JobConfig{
 				TimeoutInSeconds: 40,
-				JonPrefetch:      5,
+				JobPrefetch:      5,
 			},
 			RedisConfig: config.RedisConfig{
 				RedisPollIntervalMs: 100,
@@ -73,7 +73,7 @@ func TestE2EJob(t *testing.T) {
 		cfg := config.Config{
 			JobConfig: config.JobConfig{
 				TimeoutInSeconds: 25,
-				JonPrefetch:      5,
+				JobPrefetch:      5,
 			},
 			RedisConfig: config.RedisConfig{
 				RedisPollIntervalMs: 100,

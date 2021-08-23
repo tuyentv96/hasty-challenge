@@ -30,6 +30,6 @@ type LoggerConfig struct {
 }
 
 type JobConfig struct {
-	JonPrefetch      int64 `envconfig:"JOB_PREFETCH" default:"10"`
+	JobPrefetch      int64 `envconfig:"JOB_PREFETCH" default:"10"`
 	TimeoutInSeconds int   `envconfig:"JOB_TIMEOUT" default:"20"`
 }
