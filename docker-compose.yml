@@ -3,7 +3,6 @@ services:
   job-api:
     build: .
     command: ["./cli","serve"]
-    restart: always
     ports:
       - "3000:3000"
     environment:
@@ -19,7 +18,6 @@ services:
   job-worker:
     build: .
     command: [ "./cli","worker"]
-    restart: always
     environment:
       SQL_USER: postgres
       SQL_PASSWORD: 123456
@@ -33,6 +31,7 @@ services:
       - redis
   postgres:
     image: postgres:12.8-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
@@ -41,5 +40,6 @@ services:
       - 5432
   redis:
     image: redis:5.0.13-alpine3.14
+    restart: unless-stopped
     ports:
       - 6379
