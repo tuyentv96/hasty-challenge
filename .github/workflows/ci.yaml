@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - 'master'
-
+    tags:
+      - 'v*'
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -25,20 +26,16 @@ jobs:
           username: tuyenuit
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Docker meta
-        id: tuyen
-        uses: docker/metadata-action@v3
+        id: meta
+        uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
           images: |
             tuyenuit/hasty-challenge
           # Docker tags based on the following events/attributes
           tags: |
-            type=schedule
             type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
             type=sha
       -
         name: Build and push
@@ -47,5 +44,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64/v8
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.tuyen.outputs.tags }}
-          labels: ${{ steps.tuyen.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=tuyenuit/hasty-challenge:${{ steps.meta.outputs.tags }}
+          cache-to: type=inline
