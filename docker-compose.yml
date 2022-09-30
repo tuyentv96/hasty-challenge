@@ -11,6 +11,7 @@ services:
       SQL_NAME: postgres
       SQL_ADDRESS: postgres:5432
       REDIS_ADDRESS: redis:6379
+      REDIS_PASSWORD: mypassword
       HTTP_PORT: 3000
     depends_on:
       - postgres

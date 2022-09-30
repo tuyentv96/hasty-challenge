@@ -22,6 +22,7 @@ type SQLConfig struct {
 
 type RedisConfig struct {
 	RedisAddress        string `envconfig:"REDIS_ADDRESS" default:"localhost:6379"`
+	RedisPassword       string `envconfig:"REDIS_PASSWORD"`
 	RedisPollIntervalMs int    `envconfig:"REDIS_POLL_INTERVAL" default:"1000"`
 }
 

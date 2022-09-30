@@ -83,6 +83,7 @@ func ProvideJobWorker(cfg config.Config, logger *logrus.Entry, jobSvc jobs.Servi
 func ProvideRedis(cfg config.Config) *redis.Client {
 	return redis.NewClient(&redis.Options{
 		Addr: cfg.RedisConfig.RedisAddress,
+        Password: cfg.RedisConfig.RedisPassword,
 	})
 }
 
