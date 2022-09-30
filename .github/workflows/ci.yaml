@@ -44,5 +44,5 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64/v8
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.<meta_id>.outputs.tags }}
-          labels: ${{ steps.<meta_id>.outputs.labels }}
+          tags: ${{ steps.tuyen.outputs.tags }}
+          labels: ${{ steps.tuyen.outputs.labels }}
