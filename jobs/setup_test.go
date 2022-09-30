@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/adjust/rmq/v4"
+	"github.com/adjust/rmq/v5"
 	"github.com/go-pg/pg/v9"
 	"github.com/sirupsen/logrus"
 

@@ -7,7 +7,7 @@ import (
 
 	"github.com/benbjohnson/clock"
 
-	"github.com/adjust/rmq/v4"
+	"github.com/adjust/rmq/v5"
 
 	"github.com/tuyentv96/hasty-challenge/utils"
 )

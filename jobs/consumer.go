@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/adjust/rmq/v4"
+	"github.com/adjust/rmq/v5"
 	"github.com/benbjohnson/clock"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

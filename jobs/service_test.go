@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/adjust/rmq/v4"
+	"github.com/adjust/rmq/v5"
 	"github.com/benbjohnson/clock"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"

@@ -42,5 +42,5 @@ func JobFromJSON(js []byte) (Job, error) {
 }
 
 type JobPayload struct {
-	ObjectId int `json:"object_id""`
+	ObjectId int `json:"object_id"`
 }

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/adjust/rmq/v4"
+	"github.com/adjust/rmq/v5"
 	"github.com/benbjohnson/clock"
 	"github.com/go-pg/pg/v9"
 	"github.com/go-redis/redis/v8"
@@ -82,8 +82,8 @@ func ProvideJobWorker(cfg config.Config, logger *logrus.Entry, jobSvc jobs.Servi
 
 func ProvideRedis(cfg config.Config) *redis.Client {
 	return redis.NewClient(&redis.Options{
-		Addr: cfg.RedisConfig.RedisAddress,
-        Password: cfg.RedisConfig.RedisPassword,
+		Addr:     cfg.RedisConfig.RedisAddress,
+		Password: cfg.RedisConfig.RedisPassword,
 	})
 }
 
